@@ -10,6 +10,16 @@ import swaggerDefinition from './swaggerConfig';
 
 dotenv.config();
 
+function getMemoryUsage() {
+    const memory = process.memoryUsage();
+    return {
+        heapUsed: Math.round(memory.heapUsed / 1024 / 1024), // MB
+        heapTotal: Math.round(memory.heapTotal / 1024 / 1024), // MB
+        external: Math.round(memory.external / 1024 / 1024), // MB
+        rss: Math.round(memory.rss / 1024 / 1024) // MB
+    };
+  }
+
 async function startServer() {
   const app = express();
 
@@ -31,7 +41,35 @@ async function startServer() {
 
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-  const PORT = process.env.PORT || 4000;
+  app.get('/', (req, res) => {
+
+
+    
+    try {
+      // Check required environment variables
+
+  
+      const memoryUsage = getMemoryUsage();
+  
+      res.status(200).json({
+        status: "success",
+        message: "Service is healthy and environment variables are set.",
+        details: {
+          'memoryUsage': memoryUsage,
+        }
+      });
+    } catch (e) {
+
+      console.error(e);
+      res.status(500).json({
+        status: "success",
+        message: "Internal server error when checking health.",
+      });
+    }
+  
+  });
+
+  const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`🚀 GraphQL Server ready at http://localhost:${PORT}/graphql`);
     console.log(`📚 Swagger Docs available at http://localhost:${PORT}/api-docs`);
