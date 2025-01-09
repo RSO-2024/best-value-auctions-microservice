@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "ts-node ./test/index.test.ts"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "postgres": "^3.4.5",
     "prisma": "^5.21.1",
     "reflect-metadata": "^0.2.2",
+    "supertest": "^7.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node-dev": "^2.0.0"
